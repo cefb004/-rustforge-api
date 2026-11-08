@@ -1,13 +1,9 @@
-use axum::{
-    routing::get,
-    Router,
-};
+use rustforge_api::api::routes::create_router;
 use tokio::net::TcpListener;
 
 #[tokio::main]
 async fn main() {
-    let app = Router::new()
-        .route("/health", get(health_check));
+    let app = create_router();
 
     let listener = TcpListener::bind("0.0.0.0:3000")
         .await
@@ -18,8 +14,4 @@ async fn main() {
     axum::serve(listener, app)
         .await
         .expect("Failed to start server");
-}
-
-async fn health_check() -> &'static str {
-    "RustForge API is healthy!"
 }
